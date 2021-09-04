@@ -58,6 +58,11 @@ function HomeScreen({navigation, route}) {
     return (
       
         <View style={styles.container}>
+            <Tab.Navigator>
+                <Tab.Screen name="Tab1" component={Tab1} />
+                <Tab.Screen name="Tab2" component={Tab2} />
+                <Tab.Screen name="Tab3" component={Tab3} />
+                </Tab.Navigator>
             <Button title="Create Post" onPress={() => navigation.navigate('Create Post', data)}/>
             <Text style={{fontSize: 30}}>Glad to see you by. Hi!</Text>
             <Text style={{ fontSize: 30 }}>{topic}</Text>
@@ -118,6 +123,33 @@ function ExpertScreen({navigation}) {
         <View style={styles.container}>
             <Button title="go to home" onPress={() => navigation.popToTop()}/>
             <Text style={{fontSize: 30}}>Get the expert view from me personally</Text>
+            </View>
+    );
+}
+
+function Tab1() {
+
+    return (
+        <View style={styles.container}>
+            <Text style={{fontSize: 30}}>Tab One</Text>
+            </View>
+    );
+}
+
+function Tab2() {
+
+    return (
+        <View style={styles.container}>
+            <Text style={{fontSize: 30}}>Tab Two</Text>
+            </View>
+    );
+}
+
+function Tab3() {
+
+    return (
+        <View style={styles.container}>
+                        <Text style={{fontSize: 30}}>Tab Three</Text>
             </View>
     );
 }
