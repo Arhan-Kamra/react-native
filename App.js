@@ -161,37 +161,37 @@ function Code({navigation}) {
 }
 
 function UXDesign2({navigation}) {
+    const isDrawerOpen = useIsDrawerOpen();
 
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 30 }}>We take care of the UXDesign</Text>
-            <Button title="open drawer" onPress={() => navigation.openDrawer()} />
-            <Button title="close drawer" onPress={() => navigation.closeDrawer()} />
-            <Button title="toggle drawer" onPress={() => navigation.toggleDrawer()} />
+            {!isDrawerOpen ?
+                <Button title="open drawer" onPress={() => navigation.openDrawer()} /> : <Button title="close drawer" onPress={() => navigation.closeDrawer()} />}
             </View>
     );
 }
 
 function Research2({navigation}) {
+    const isDrawerOpen = useIsDrawerOpen();
 
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 30 }}>We do Research</Text>
-            <Button title="open drawer" onPress={() => navigation.openDrawer()} />
-            <Button title="close drawer" onPress={() => navigation.closeDrawer()} />
-            <Button title="toggle drawer" onPress={() => navigation.toggleDrawer()} />
+            {!isDrawerOpen ?
+                <Button title="open drawer" onPress={() => navigation.openDrawer()} /> : <Button title="close drawer" onPress={() => navigation.closeDrawer()} />}
             </View>
     );
 }
 
 function Code2({navigation}) {
+    const isDrawerOpen = useIsDrawerOpen();
 
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 30 }}>We write Code</Text>
-            <Button title="open drawer" onPress={() => navigation.openDrawer()} />
-            <Button title="close drawer" onPress={() => navigation.closeDrawer()} />
-            <Button title="toggle drawer" onPress={() => navigation.toggleDrawer()} />
+            {!isDrawerOpen ?
+                <Button title="open drawer" onPress={() => navigation.openDrawer()} /> : <Button title="close drawer" onPress={() => navigation.closeDrawer()} />}
             </View>
     );
 }
