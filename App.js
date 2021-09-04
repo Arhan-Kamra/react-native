@@ -2,10 +2,10 @@ import 'react-native-gesture-handler';
 
 import { Button, Dimensions, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, {useEffect, useState} from 'react'
+import { createDrawerNavigator, useIsDrawerOpen } from '@react-navigation/drawer';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import  {createStackNavigator} from '@react-navigation/stack'
 
 const Stack = createStackNavigator();
@@ -59,9 +59,9 @@ function HomeScreen({navigation, route}) {
       
         <View style={styles.container}>
             <Tab.Navigator>
-                <Tab.Screen name="Tab1" component={Tab1} />
-                <Tab.Screen name="Tab2" component={Tab2} />
-                <Tab.Screen name="Tab3" component={Tab3} />
+                <Tab.Screen name="UXDesign" component={UXDesign} />
+                <Tab.Screen name="Research" component={Research} />
+                <Tab.Screen name="Code" component={Code} />
                 </Tab.Navigator>
             <Button title="Create Post" onPress={() => navigation.navigate('Create Post', data)}/>
             <Text style={{fontSize: 30}}>Glad to see you by. Hi!</Text>
@@ -76,8 +76,14 @@ function CreatePostScreen({navigation, route}) {
     const {itemId} = route.params;
     const [postTopic, setPostTopic] = useState('');
     const [postContent, setPostContent] = useState('');
+
     return (
         <View style={styles.container}>
+            <Drawer.Navigator>
+                <Drawer.Screen name="Research2" component={Research2} />
+                <Drawer.Screen name="UXDesign2" component={UXDesign2} />
+                <Drawer.Screen name="Code2" component={Code2} />
+            </Drawer.Navigator>
             <Button title="lets know each other" onPress={() => navigation.navigate('About')}/>
             <Text style={{ fontSize: 30 }}>itemId: {itemId}</Text>
             <TextInput value={postTopic} onChangeText={setPostTopic} placeholder="write post topic here" style={{paddingVertical: 8, paddingHorizontal: 16, borderWidth: 1, borderColor: '#444', width: '20%' }} />
@@ -127,32 +133,69 @@ function ExpertScreen({navigation}) {
     );
 }
 
-function Tab1() {
+function UXDesign({navigation}) {
 
     return (
         <View style={styles.container}>
-            <Text style={{fontSize: 30}}>Tab One</Text>
+            <Text style={{ fontSize: 30 }}>We take care of the UXDesign</Text>
             </View>
     );
 }
 
-function Tab2() {
+function Research({navigation}) {
 
     return (
         <View style={styles.container}>
-            <Text style={{fontSize: 30}}>Tab Two</Text>
+            <Text style={{ fontSize: 30 }}>We do Research</Text>
             </View>
     );
 }
 
-function Tab3() {
+function Code({navigation}) {
 
     return (
         <View style={styles.container}>
-                        <Text style={{fontSize: 30}}>Tab Three</Text>
+            <Text style={{ fontSize: 30 }}>We write Code</Text>
             </View>
     );
 }
+
+function UXDesign2({navigation}) {
+
+    return (
+        <View style={styles.container}>
+            <Text style={{ fontSize: 30 }}>We take care of the UXDesign</Text>
+            <Button title="open drawer" onPress={() => navigation.openDrawer()} />
+            <Button title="close drawer" onPress={() => navigation.closeDrawer()} />
+            <Button title="toggle drawer" onPress={() => navigation.toggleDrawer()} />
+            </View>
+    );
+}
+
+function Research2({navigation}) {
+
+    return (
+        <View style={styles.container}>
+            <Text style={{ fontSize: 30 }}>We do Research</Text>
+            <Button title="open drawer" onPress={() => navigation.openDrawer()} />
+            <Button title="close drawer" onPress={() => navigation.closeDrawer()} />
+            <Button title="toggle drawer" onPress={() => navigation.toggleDrawer()} />
+            </View>
+    );
+}
+
+function Code2({navigation}) {
+
+    return (
+        <View style={styles.container}>
+            <Text style={{ fontSize: 30 }}>We write Code</Text>
+            <Button title="open drawer" onPress={() => navigation.openDrawer()} />
+            <Button title="close drawer" onPress={() => navigation.closeDrawer()} />
+            <Button title="toggle drawer" onPress={() => navigation.toggleDrawer()} />
+            </View>
+    );
+}
+
 
 const styles = StyleSheet.create({
     container: {
