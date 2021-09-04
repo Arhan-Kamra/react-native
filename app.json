@@ -1,9 +1,11 @@
 {
   "expo": {
-    "name": "your-app",
-    "slug": "your-app",
+    "name": "Learn Mobile App Navigation",
+    "slug": "learnNavigation",
+    "description": "Learn how to navigate in 3 different ways in mobile apps named 'Drawer navigation', 'Tab navigation' and 'Stack navigation'",
+    "privacy": "public",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
