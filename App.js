@@ -9,20 +9,40 @@ import {
   Text,
   TextInput,
   View,
+  useColorScheme,
 } from "react-native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+  useNavigation,
+  useRoute,
+  useTheme,
+} from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   createDrawerNavigator,
   useIsDrawerOpen,
 } from "@react-navigation/drawer";
 
-import { NavigationContainer } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+const MyTheme = {
+  dark: false,
+  colors: {
+    primary: "rgb(55, 145, 185)",
+    background: "rgb(242, 242, 242)",
+    card: "rgb(255, 255, 255)",
+    text: "rgb(28, 28, 30)",
+    border: "rgb(199, 199, 204)",
+    notification: "rgb(255, 69, 58)",
+  },
+};
 
 const LogoTitle = () => {
   return (
@@ -35,14 +55,15 @@ const LogoTitle = () => {
   );
 };
 function App() {
+  const scheme = useColorScheme();
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={scheme !== "dark" ? DarkTheme : DefaultTheme}>
       <Stack.Navigator
         initialRouteName='Home'
         screenOptions={({ navigation, route }) => ({
-          headerStyle: { backgroundColor: "#222" },
+          //   headerStyle: { backgroundColor: "#222" },
           headerTitle: () => <LogoTitle />,
-          headerTintColor: "pink",
+          //   headerTintColor: "pink",
           headerTitleStyle: {
             fontFamily: "Verdana",
             fontSize: 18,
@@ -51,7 +72,7 @@ function App() {
             fontWeight: 700,
           },
           headerShown: true,
-          headerTitleAlign: "center",
+          headerTitleAlign: "left",
           headerTransparent: false,
         })}
       >
@@ -113,6 +134,7 @@ function HomeScreen({ navigation, route }) {
   let data = { itemId: 79 };
   const [topic, setTopic] = useState("default topic");
   const [content, setContent] = useState("default content");
+  const { colors } = useTheme();
 
   useEffect(() => {
     if (route.params?.topic && route.params?.content) {
@@ -123,25 +145,74 @@ function HomeScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
+      <Icon name='md-analytics' size={30} color='red' />
+      <View style={{ width: 200, justifyContent: "center" }}>
+        <Icon.Button
+          name='md-analytics-sharp'
+          color='red'
+          backgroundColor='black'
+          size={30}
+          borderRadius={0}
+          iconStyle={{ marginRight: 30, color: "white" }}
+        >
+          <Text style={{ color: "yellow", fontWeight: 700 }}>md-analytics</Text>
+        </Icon.Button>
+      </View>
       <Button
         title='Create Post'
         onPress={() => navigation.navigate("Create Post", data)}
       />
-      <Text style={{ fontSize: 30 }}>Glad to see you by. Hi!</Text>
-      <Text style={{ fontSize: 30 }}>{topic}</Text>
-      <Text style={{ fontSize: 30 }}>{content}</Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>
+        Glad to see you by. Hi!
+      </Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>{topic}</Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>{content}</Text>
     </View>
   );
 }
 
-function CreatePostScreen({ navigation, route }) {
+function CreatePostScreen() {
+  const navigation = useNavigation();
+  const route = useRoute();
   const { itemId } = route.params;
   const [postTopic, setPostTopic] = useState("");
   const [postContent, setPostContent] = useState("");
+  const { colors } = useTheme();
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("drawerOpen", e => {
+      // Do something when drawer is open
+      alert("drawer is open");
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("drawerClose", e => {
+      // Do something when drawer is closed
+      alert("drawer is closed");
+    });
+
+    return unsubscribe;
+  }, [navigation]);
   return (
     <View style={styles.container}>
-      <Drawer.Navigator>
+      <Drawer.Navigator
+        initialRouteName='Code2'
+        backBehavior='order'
+        openByDefault={true}
+        drawerPosition='left'
+        drawerType='front'
+        drawerStyle={{ backgroundColor: "lightgray", width: 240 }}
+        overlayColor='rgba(200, 200, 200, 0.1)'
+        drawerContentOptions={{
+          activeTintColor: "black",
+          activeBackgroundColor: "white",
+          inactiveTintColor: "grey",
+          inactiveBackgroundColor: "black",
+        }}
+      >
         <Drawer.Screen name='Research2' component={Research2} />
         <Drawer.Screen name='UXDesign2' component={UXDesign2} />
         <Drawer.Screen name='Code2' component={Code2} />
@@ -159,7 +230,7 @@ function CreatePostScreen({ navigation, route }) {
           paddingVertical: 8,
           paddingHorizontal: 16,
           borderWidth: 1,
-          borderColor: "#444",
+          borderColor: colors.border,
           width: "20%",
         }}
       />
@@ -171,7 +242,7 @@ function CreatePostScreen({ navigation, route }) {
           paddingVertical: 8,
           paddingHorizontal: 16,
           borderWidth: 1,
-          borderColor: "#444",
+          borderColor: colors.border,
           width: "20%",
         }}
       />
@@ -189,69 +260,71 @@ function CreatePostScreen({ navigation, route }) {
 }
 
 function AboutScreen({ navigation }) {
+  const { colors } = useTheme();
+
   return (
     <ScrollView style={styles.container}>
       <Button
         title='looking for details?'
         onPress={() => navigation.navigate("Blog")}
       />
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
         have only the best of the best and have the budget. Take sepcialized
         personal consultant service from me. Contact me at - arhan
       </Text>
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
         have only the best of the best and have the budget. Take sepcialized
         personal consultant service from me. Contact me at - arhan
       </Text>
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
         have only the best of the best and have the budget. Take sepcialized
         personal consultant service from me. Contact me at - arhan
       </Text>
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
         have only the best of the best and have the budget. Take sepcialized
         personal consultant service from me. Contact me at - arhan
       </Text>
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
         have only the best of the best and have the budget. Take sepcialized
         personal consultant service from me. Contact me at - arhan
       </Text>
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
         have only the best of the best and have the budget. Take sepcialized
         personal consultant service from me. Contact me at - arhan
       </Text>
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
         have only the best of the best and have the budget. Take sepcialized
         personal consultant service from me. Contact me at - arhan
       </Text>
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
         have only the best of the best and have the budget. Take sepcialized
         personal consultant service from me. Contact me at - arhan
       </Text>
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We are glad that you want to know more about us. We love people. We are
         a UX company that provides you the best not only in the market but from
         our side as well. If we can do more for you, trust us we will. Want to
@@ -263,13 +336,15 @@ function AboutScreen({ navigation }) {
 }
 
 function BlogScreen({ navigation }) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.container}>
       <Button
         title='what do we serve'
         onPress={() => navigation.navigate("Services")}
       />
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         We want you to make an informed decision. Here, find few blogs that
         interests you and read them along the way. Here are our best suggestions
         if you like:
@@ -279,13 +354,15 @@ function BlogScreen({ navigation }) {
 }
 
 function ServicesScreen({ navigation }) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.container}>
       <Button
         title='free yourself and leave everything on the expert'
         onPress={() => navigation.navigate("Expert")}
       />
-      <Text style={{ fontSize: 30 }}>
+      <Text style={{ fontSize: 30, color: colors.text }}>
         Find all the rare and luxurious services on this page
       </Text>
     </View>
@@ -293,6 +370,8 @@ function ServicesScreen({ navigation }) {
 }
 
 function ExpertScreen({ navigation }) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.container}>
       <Tab.Navigator>
@@ -306,35 +385,47 @@ function ExpertScreen({ navigation }) {
 }
 
 function UXDesign({ navigation }) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30 }}>We take care of the UXDesign</Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>
+        We take care of the UXDesign
+      </Text>
     </View>
   );
 }
 
 function Research({ navigation }) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30 }}>We do Research</Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>We do Research</Text>
     </View>
   );
 }
 
 function Code({ navigation }) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30 }}>We write Code</Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>We write Code</Text>
     </View>
   );
 }
 
 function UXDesign2({ navigation }) {
+  const { colors } = useTheme();
+
   const isDrawerOpen = useIsDrawerOpen();
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30 }}>We take care of the UXDesign</Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>
+        We take care of the UXDesign
+      </Text>
       {!isDrawerOpen ? (
         <Button title='open drawer' onPress={() => navigation.openDrawer()} />
       ) : (
@@ -345,11 +436,13 @@ function UXDesign2({ navigation }) {
 }
 
 function Research2({ navigation }) {
+  const { colors } = useTheme();
+
   const isDrawerOpen = useIsDrawerOpen();
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30 }}>We do Research</Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>We do Research</Text>
       {!isDrawerOpen ? (
         <Button title='open drawer' onPress={() => navigation.openDrawer()} />
       ) : (
@@ -360,11 +453,13 @@ function Research2({ navigation }) {
 }
 
 function Code2({ navigation }) {
+  const { colors } = useTheme();
+
   const isDrawerOpen = useIsDrawerOpen();
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30 }}>We write Code</Text>
+      <Text style={{ fontSize: 30, color: colors.text }}>We write Code</Text>
       {!isDrawerOpen ? (
         <Button title='open drawer' onPress={() => navigation.openDrawer()} />
       ) : (
@@ -378,7 +473,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // marginTop: 60,
-    backgroundColor: "offwhite",
   },
 });
 
