@@ -1,5 +1,7 @@
 import "react-native-gesture-handler";
 
+import * as SMS from "expo-sms";
+
 import {
   Button,
   Dimensions,
@@ -26,11 +28,11 @@ import {
 } from "@react-navigation/drawer";
 
 import Icon from "react-native-vector-icons/Ionicons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const MyTheme = {
   dark: false,
